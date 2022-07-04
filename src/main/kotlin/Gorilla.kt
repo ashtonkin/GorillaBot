@@ -11,7 +11,7 @@ class Gorilla {
 
     companion object {
         private const val token =
-            "OTc0NjY3MzAwMjYxMjE2MzY2.GcW4z6.kiBjn8xzMLanJQFYwt2OBUNqRolntKIGBcazAc"
+            "YOUR TOKEN HERE"
         private val builder = DefaultShardManagerBuilder.createDefault(token)
             .disableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGE_TYPING)
     }
