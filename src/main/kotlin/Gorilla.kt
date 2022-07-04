@@ -4,34 +4,33 @@ import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.*
 
 class Gorilla {
 
     private val logger = LoggerFactory.getLogger("Gorilla") as Logger
 
-    companion object {
-        private const val token =
-            "OTc0NjY3MzAwMjYxMjE2MzY2.GcW4z6.kiBjn8xzMLanJQFYwt2OBUNqRolntKIGBcazAc"
-        private val builder = DefaultShardManagerBuilder.createDefault(token)
-            .disableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGE_TYPING)
-    }
-
     //TODO: Add setup command
     //      - give role on join (need to know the role ID and save within guild file)
 
     init {
-        registerListeners()
-        builder.build()
+        val props = Properties()
+        props.load(Gorilla::class.java.getResourceAsStream("/bot.properties"))
+        val token = props.getProperty("TOKEN")
+        val bot = DefaultShardManagerBuilder.createDefault(token)
+            .disableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGE_TYPING)
+        registerListeners(bot)
+        bot.build()
         logger.info("Gorilla is alive!!")
     }
 
-    private fun registerListeners() {
+    private fun registerListeners(bot: DefaultShardManagerBuilder) {
         val listeners = listOf(
             JoinListener(),
             StatusListener()
         )
         logger.info("Registering ${listeners.size} listeners...")
-        listeners.forEach { builder.addEventListeners(it) }
+        listeners.forEach { bot.addEventListeners(it) }
     }
 
 
